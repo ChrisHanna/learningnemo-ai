@@ -4,6 +4,7 @@ import {ArrowRight,Braces,Check,ChevronRight,LockKeyhole,Play} from "lucide-reac
 import {catalog,repositories,stages,type StageId} from "@/lib/catalog";
 import {baselineDemo,guardedDemo} from "@/lib/demo-fixtures";
 import {baselineSupportAgent} from "@/lib/build-stage";
+import {getLesson} from "@/lib/lesson";
 import {StudioShell} from "@/components/studio-shell";
 export default function Home(){
  const [stage,setStage]=useState<StageId>("build"); const [ran,setRan]=useState(false); const [guarded,setGuarded]=useState(false); const [validated,setValidated]=useState(false);
@@ -19,7 +20,7 @@ export default function Home(){
      </div>
     </section>
     {stage==="build"&&<BuildStage validated={validated} onValidate={()=>setValidated(true)}/>}
-    <section className="catalog" id="catalog"><div className="section-head"><div><p>CURRICULUM / {stage.toUpperCase()}</p><h2>{stages.find(s=>s.id===stage)?.promise}</h2></div><span>{lessons.filter(x=>x.kind==="interactive").length} interactive · {lessons.filter(x=>x.kind==="guided").length} guided</span></div><div className="lesson-grid">{lessons.map((l,i)=><article key={l.id}><div className="meta"><span>{l.id}</span><b className={l.kind}>{l.kind}</b></div><h3>{l.title}</h3><p>{l.summary}</p><div className="lesson-repos">{l.repositories.map(id=>{const repository=repositories.find(item=>item.id===id)!;return <a key={id} href={repository.url} target="_blank" rel="noreferrer">{repository.name}</a>})}</div><div className="lesson-foot"><span>{l.duration} min</span><button>{i?"Preview":"Start"}<ChevronRight size={14}/></button></div></article>)}</div></section>
+    <section className="catalog" id="catalog"><div className="section-head"><div><p>CURRICULUM / {stage.toUpperCase()}</p><h2>{stages.find(s=>s.id===stage)?.promise}</h2></div><span>{lessons.filter(x=>x.kind==="interactive").length} interactive · {lessons.filter(x=>x.kind==="guided").length} guided</span></div><div className="lesson-grid">{lessons.map(l=>{const available=Boolean(getLesson(l.id));return <article key={l.id}><div className="meta"><span>{l.id}</span><b className={l.kind}>{l.kind}</b></div><h3>{l.title}</h3><p>{l.summary}</p><div className="lesson-repos">{l.repositories.map(id=>{const repository=repositories.find(item=>item.id===id)!;return <a key={id} href={repository.url} target="_blank" rel="noreferrer">{repository.name}</a>})}</div><div className="lesson-foot"><span>{l.duration} min</span>{available?<a className="lesson-link" href={`/lessons/${l.id}`}>Start<ChevronRight size={14}/></a>:<span>Coming next</span>}</div></article>})}</div></section>
  </StudioShell>
 }
 function BuildStage({validated,onValidate}:{validated:boolean;onValidate:()=>void}){
