@@ -38,9 +38,9 @@ function BuildStage({validated,onValidate}:{validated:boolean;onValidate:()=>voi
 }
 function EvaluateStage({hasRun,onRun}:{hasRun:boolean;onRun:()=>void}){
  return <section className="evaluation-stage" aria-labelledby="evaluation-stage-title">
-  <div className="stage-copy"><p className="eyebrow">STAGE 05 · EVALUATE</p><h2 id="evaluation-stage-title">Turn behavior into evidence.</h2><p>Run the same dataset through nat eval, then inspect quality, groundedness, safety, cost, and latency before comparing a new version.</p><button className="primary" onClick={onRun}>{hasRun?<><Check size={15}/>Evaluation complete</>:<>Run nat eval <ArrowRight size={15}/></>}</button></div>
+  <div className="stage-copy"><p className="eyebrow">STAGE 05 · EVALUATE</p><h2 id="evaluation-stage-title">Turn behavior into evidence.</h2><p>Run the same dataset through nat eval, then inspect quality, groundedness, safety, cost, and latency before comparing a new version.</p><button className="primary" onClick={onRun} disabled={hasRun}>{hasRun?<><Check size={15}/>Evaluation complete</>:<>Run nat eval <ArrowRight size={15}/></>}</button></div>
   <div className="evaluation-card">
-   <div className="evaluation-head"><div><small>EVALUATION DATASET</small><strong>{evaluationDataset.length} cases · normal / edge / adversarial</strong></div><span className={hasRun?"validated":""}>{hasRun?"SCORED":"READY"}</span></div>
+   <div className="evaluation-head"><div><small>nat eval / DATASET</small><strong>{evaluationDataset.length} cases · normal / edge / adversarial</strong></div><span className={hasRun?"validated":""}>{hasRun?"SCORED":"READY"}</span></div>
    <div className="dataset-list">{evaluationDataset.map(item=><div key={item.id}><b>{item.label}</b><span>{item.prompt}</span><small>{item.expected}</small></div>)}</div>
    <div className="metric-grid">{evaluatorMetrics.map(metric=><div key={metric.name} className={metric.status}><small>{metric.name}</small><strong>{hasRun?metric.score:"—"}</strong><span>{metric.purpose}</span></div>)}</div>
   </div>
