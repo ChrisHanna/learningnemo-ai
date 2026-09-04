@@ -39,6 +39,7 @@ for(const repository of data.repositories){
 const nooa=data.repositories.find(repository=>repository.id==="nooa");
 const guardrails=data.repositories.find(repository=>repository.id==="guardrails");
 const anonymizer=data.repositories.find(repository=>repository.id==="anonymizer");
+if(!nooa||!guardrails||!anonymizer) fail("required canonical repository metadata is missing");
 if(nooa.packageName!=="nooa") fail("NOOA package identity drifted");
 if(nooa.status!=="research/alpha") fail("NOOA maturity/status is not research/alpha");
 if(!guardrails.colangVersion) fail("Guardrails Colang version is missing");
