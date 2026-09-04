@@ -1,0 +1,45 @@
+name: NOOA lesson smoke
+
+on:
+  pull_request:
+    paths:
+      - "content/lessons/**"
+      - "exercises/nooa/**"
+      - "lib/lesson.ts"
+      - "scripts/validate-lessons.mjs"
+      - ".github/workflows/nooa-lesson-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lesson-01:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - name: Validate lesson contract
+        run: npm run validate:lessons
+      - name: Execute the pinned NOOA package
+        env:
+          NOOA_SOURCE_REF: c28e05a4e5eeadb988cd27a31841e32b14d00f65
+        run: |
+          mkdir -p evidence/nooa/lesson-01
+          uv run --with "nooa @ git+https://github.com/NVIDIA-NeMo/labs-OO-Agents.git@${NOOA_SOURCE_REF}" \
+            python exercises/nooa/lesson-01/support_agent.py \
+            | tee evidence/nooa/lesson-01/output.json
+          python -m json.tool evidence/nooa/lesson-01/output.json
+          printf '%s\n' "$NOOA_SOURCE_REF" > evidence/nooa/lesson-01/source-ref.txt
+          printf '%s\n' "$GITHUB_SHA" > evidence/nooa/lesson-01/product-commit.txt
+          date --utc +%FT%TZ > evidence/nooa/lesson-01/executed-at.txt
+      - name: Retain execution evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: nooa-lesson-01-${{ github.sha }}
+          path: evidence/nooa/lesson-01
+          if-no-files-found: error
+          retention-days: 30
