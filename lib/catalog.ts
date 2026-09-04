@@ -25,7 +25,8 @@ type Lesson={id:string;stage:StageId;title:string;summary:string;kind:LessonKind
 const sourceFor=(ids:CanonicalRepositoryId[])=>ids.map(repository=>{
  const source=repositories.find(item=>item.id===repository);
  if(!source) throw new Error(`Unknown catalog repository: ${repository}`);
- return {repository,...source};
+ const {pinnedRef,lastVerified,packageName,status,safetyNote}=source;
+ return {repository,pinnedRef,lastVerified,packageName,status,safetyNote};
 });
 
 const definitions:LessonDefinition[]=[
