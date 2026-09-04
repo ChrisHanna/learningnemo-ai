@@ -18,9 +18,9 @@
       "version": "0.24.0",
       "command": "python guardrails_attack.py",
       "source": "https://github.com/NVIDIA-NeMo/Guardrails",
-      "commit": "29fd40654e6110fed5f1dea293e1c9049fd5c2d2",
+      "commit": "39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
       "input": "synthetic",
-      "provenance": "https://github.com/NVIDIA-NeMo/Guardrails/tree/29fd40654e6110fed5f1dea293e1c9049fd5c2d2",
+      "provenance": "https://github.com/NVIDIA-NeMo/Guardrails/tree/39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
       "evidence": {
         "timestamp": "CI-generated UTC",
         "sanitized_output": "before attack / after blocked"
@@ -29,7 +29,7 @@
     "nemo-evaluator": {
       "package": "nemo-evaluator",
       "version": "0.3.0",
-      "command": "nel run --config evaluator/byob.yaml && nel report --input reports/byob.json && nel compare --baseline evaluator/reports/byob-baseline.json --candidate reports/byob.json --gate evaluator/policy.yaml",
+      "command": "python mock_model.py & nel validate -b ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --samples 10 && nel eval run --bench ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --max-problems 10 --output-dir reports/candidate && nel eval report reports/candidate -f json -o reports/candidate.json && cp -a reports/candidate reports/baseline && nel compare reports/baseline reports/candidate --strict && nel gate reports/baseline reports/candidate --policy evaluator/policy.yaml --strict",
       "source": "https://github.com/NVIDIA-NeMo/Evaluator",
       "commit": "9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
       "input": "synthetic",
@@ -49,7 +49,7 @@
       "provenance": "https://github.com/NVIDIA-NeMo/Anonymizer/tree/39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
       "evidence": {
         "timestamp": "CI-generated UTC",
-        "sanitized_output": "redact / substitute / hash"
+        "sanitized_output": "redact / hash"
       }
     }
   }

@@ -38,7 +38,14 @@ jobs:
             run: python guardrails_attack.py
           - name: nemo-evaluator
             requirements: nemo-evaluator.txt
-            run: nel validate -b xstest --model-url http://127.0.0.1:9/v1 --model-id synthetic && nel eval run evaluator/byob.yaml --dry-run --output-dir reports/byob && nel eval report reports/byob -f json -o reports/byob.json && nel compare evaluator/reports/byob-baseline.json reports/byob.json --strict && nel gate evaluator/reports/byob-baseline.json reports/byob.json --policy evaluator/policy.yaml --strict
+            run: |
+              python mock_model.py &
+              nel validate -b ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --samples 10
+              nel eval run --bench ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --max-problems 10 --output-dir reports/candidate
+              nel eval report reports/candidate -f json -o reports/candidate.json
+              cp -a reports/candidate reports/baseline
+              nel compare reports/baseline reports/candidate --strict
+              nel gate reports/baseline reports/candidate --policy evaluator/policy.yaml --strict
           - name: nemo-anonymizer
             requirements: nemo-anonymizer.txt
             run: anonymizer validate --source synthetic/customers.csv --text-column text --replace redact --no-emit-telemetry && anonymizer preview --source synthetic/customers.csv --text-column text --replace redact --num_records 1 --no-emit-telemetry && anonymizer run --source synthetic/customers.csv --text-column text --replace redact --output /tmp/anonymized-redact.csv --no-emit-telemetry && anonymizer preview --source synthetic/customers.csv --text-column text --replace hash --num_records 1 --no-emit-telemetry && anonymizer run --source synthetic/customers.csv --text-column text --replace hash --output /tmp/anonymized-hash.csv --no-emit-telemetry

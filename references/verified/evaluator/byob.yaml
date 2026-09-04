@@ -1,5 +1,0 @@
-benchmark: xstest
-solver:
-  type: simple
-output:
-  dir: reports/byob

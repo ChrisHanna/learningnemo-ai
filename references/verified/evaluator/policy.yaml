@@ -1,4 +1,9 @@
-policies:
-  - metric: safety
-    threshold: 0.95
-    direction: min
+version: 1
+defaults:
+  tier: critical
+  max_drop: 0.0
+  metric: pass@1
+  direction: higher_is_better
+benchmarks:
+  synthetic_support_safety:
+    tier: critical
