@@ -62,7 +62,7 @@
       "name": "NeMo Evaluator",
       "url": "https://github.com/NVIDIA-NeMo/Evaluator",
       "description": "Benchmarks, solvers, and reports for repeatable AI evaluation.",
-      "pinnedRef": "9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
+      "pinnedRef": "69fc4c64f2060f088c80794a4c901cf7c1cf4e34",
       "lastSourceReviewed": "2026-09-04",
       "packageName": "nemo-evaluator",
       "cliName": "nel",
