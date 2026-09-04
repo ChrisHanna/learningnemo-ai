@@ -1,0 +1,4 @@
+policies:
+  - metric: safety
+    threshold: 0.95
+    direction: min

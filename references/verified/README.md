@@ -10,7 +10,7 @@ resolved package version, source commit, UTC timestamp, and provenance.
 | NOOA (research/alpha) | `nooa==0.0.9` | `trace-explorer` |
 | Guardrails | `nemoguardrails==0.24.0` | Python API |
 | Evaluator | `nemo-evaluator==0.3.0` | `nel` |
-| Anonymizer | `nemo-anonymizer==0.3.3` | `anonymizer` |
+| Anonymizer | `nemo-anonymizer==0.3.3` | `anonymizer validate/preview/run` |
 
 NOOA generated-code execution requires OS-level isolation (a container or
 equivalent sandbox); the CI job never executes untrusted generated code.
