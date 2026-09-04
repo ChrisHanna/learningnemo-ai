@@ -3,9 +3,10 @@ import {useMemo,useState} from "react";
 import {ArrowRight,Braces,Check,ChevronRight,Crosshair,Eye,LockKeyhole,Play,Radar,ShieldCheck,Sparkles} from "lucide-react";
 import {catalog,stages,type StageId} from "@/lib/catalog";
 import {baselineDemo,guardedDemo} from "@/lib/demo-fixtures";
+import {baselineSupportAgent} from "@/lib/build-stage";
 const icons={build:Braces,trace:Eye,attack:Crosshair,guard:ShieldCheck,evaluate:Radar,improve:Sparkles};
 export default function Home(){
- const [stage,setStage]=useState<StageId>("build"); const [ran,setRan]=useState(false); const [guarded,setGuarded]=useState(false);
+ const [stage,setStage]=useState<StageId>("build"); const [ran,setRan]=useState(false); const [guarded,setGuarded]=useState(false); const [validated,setValidated]=useState(false);
  const lessons=useMemo(()=>catalog.filter(x=>x.stage===stage),[stage]);
  return <main>
   <header className="topbar"><a className="brand" href="#top"><b>N</b>LearningNeMo<span>.ai</span></a><div className="top-actions"><small><i/>Interview release · 24 lessons</small><a href="#catalog">Explore catalog</a></div></header>
@@ -21,10 +22,21 @@ export default function Home(){
       <div className="demo-foot"><div><small>ATTACK RESISTANCE</small><strong>{ran ? (guarded ? guardedDemo : baselineDemo).resistance : "—"}</strong></div><button disabled={!ran} onClick={()=>setGuarded(v=>!v)}><LockKeyhole size={14}/>{guarded?"Remove guard":"Apply least privilege"}</button></div>
      </div>
     </section>
+    {stage==="build"&&<BuildStage validated={validated} onValidate={()=>setValidated(true)}/>}
     <section className="catalog" id="catalog"><div className="section-head"><div><p>CURRICULUM / {stage.toUpperCase()}</p><h2>{stages.find(s=>s.id===stage)?.promise}</h2></div><span>{lessons.filter(x=>x.kind==="interactive").length} interactive · {lessons.filter(x=>x.kind==="guided").length} guided</span></div><div className="lesson-grid">{lessons.map((l,i)=><article key={l.id}><div className="meta"><span>{l.id}</span><b className={l.kind}>{l.kind}</b></div><h3>{l.title}</h3><p>{l.summary}</p><div className="lesson-foot"><span>{l.duration} min</span><button>{i?"Preview":"Start"}<ChevronRight size={14}/></button></div></article>)}</div></section>
    </div>
   </section>
   <footer><div><b>N</b><span>Independent learning project by Chris Hanna.<br/>Not affiliated with or endorsed by NVIDIA.</span></div><p>Build → Trace → Attack → Guard → Evaluate → Improve</p></footer>
  </main>
+}
+function BuildStage({validated,onValidate}:{validated:boolean;onValidate:()=>void}){
+ return <section className="build-stage" aria-labelledby="build-stage-title">
+  <div className="build-copy"><p className="eyebrow">STAGE 01 · BUILD</p><h2 id="build-stage-title">Start with a narrow, observable workflow.</h2><p>Configure the baseline support agent before asking it to make decisions. Every capability is explicit so later stages can trace and harden it.</p><button className="primary" onClick={onValidate}>{validated?<><Check size={15}/>Workflow validated</>:<>Validate baseline workflow <ArrowRight size={15}/></>}</button></div>
+  <div className="workflow-card">
+   <div className="workflow-head"><div><small>WORKFLOW CONFIGURATION</small><strong>{baselineSupportAgent.name}</strong></div><span className={validated?"validated":""}>{validated?"READY":"DRAFT"}</span></div>
+   <div className="build-fields">{baselineSupportAgent.fields.map(field=><div className="build-field" key={field.label}><small>{field.label}</small><strong>{field.value}</strong><span>{field.detail}</span></div>)}</div>
+   <div className="workflow-steps"><small>REQUEST PATH</small><div>{baselineSupportAgent.steps.map((step,index)=><span key={step}><b>{index+1}</b>{step}</span>)}</div></div>
+  </div>
+ </section>
 }
 function Row({title,detail,state=""}:{title:string;detail:string;state?:string}){return <div className={"row "+state}><i>{state==="safe"?<Check size={12}/>:<ArrowRight size={12}/>}</i><div><strong>{title}</strong><small>{detail}</small></div></div>}
