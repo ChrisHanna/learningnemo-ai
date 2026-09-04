@@ -1,18 +1,14 @@
 "use client";
 import {useMemo,useState} from "react";
-import {ArrowRight,Braces,Check,ChevronRight,Crosshair,Eye,LockKeyhole,Play,Radar,ShieldCheck,Sparkles} from "lucide-react";
+import {ArrowRight,Braces,Check,ChevronRight,LockKeyhole,Play} from "lucide-react";
 import {catalog,stages,type StageId} from "@/lib/catalog";
 import {baselineDemo,guardedDemo} from "@/lib/demo-fixtures";
 import {baselineSupportAgent} from "@/lib/build-stage";
-const icons={build:Braces,trace:Eye,attack:Crosshair,guard:ShieldCheck,evaluate:Radar,improve:Sparkles};
+import {StudioShell} from "@/components/studio-shell";
 export default function Home(){
  const [stage,setStage]=useState<StageId>("build"); const [ran,setRan]=useState(false); const [guarded,setGuarded]=useState(false); const [validated,setValidated]=useState(false);
  const lessons=useMemo(()=>catalog.filter(x=>x.stage===stage),[stage]);
- return <main>
-  <header className="topbar"><a className="brand" href="#top"><b>N</b>LearningNeMo<span>.ai</span></a><div className="top-actions"><small><i/>Interview release · 24 lessons</small><a href="#catalog">Explore catalog</a></div></header>
-  <section className="workspace" id="top">
-   <aside className="rail"><p>THE LEARNING LOOP</p><nav>{stages.map((s,i)=>{const Icon=icons[s.id];return <button key={s.id} onClick={()=>setStage(s.id)} className={stage===s.id?"active":""} aria-current={stage===s.id?"step":undefined}><small>0{i+1}</small><Icon size={18}/><span>{s.label}</span></button>})}</nav><div className="rail-note"><strong>One agent. Six decisions.</strong><span>Every lesson advances the same secure support agent.</span></div></aside>
-   <div className="content">
+ return <StudioShell stage={stage} onStageChange={setStage}>
     <section className="intro">
      <div><p className="eyebrow">NVIDIA NEMO · AGENTIC AI SAFETY</p><h1>Build agents that<br/><em>earn the right</em> to run.</h1><p className="lede">Learn the complete engineering loop by building, breaking, and hardening one enterprise support agent—then prove it with evidence.</p><div className="actions"><button className="primary" onClick={()=>{setRan(true);setGuarded(false)}}><Play size={15} fill="currentColor"/>Run the unsafe agent</button><span>90-second guided demo</span></div></div>
      <div className="demo" aria-live="polite">
@@ -24,10 +20,7 @@ export default function Home(){
     </section>
     {stage==="build"&&<BuildStage validated={validated} onValidate={()=>setValidated(true)}/>}
     <section className="catalog" id="catalog"><div className="section-head"><div><p>CURRICULUM / {stage.toUpperCase()}</p><h2>{stages.find(s=>s.id===stage)?.promise}</h2></div><span>{lessons.filter(x=>x.kind==="interactive").length} interactive · {lessons.filter(x=>x.kind==="guided").length} guided</span></div><div className="lesson-grid">{lessons.map((l,i)=><article key={l.id}><div className="meta"><span>{l.id}</span><b className={l.kind}>{l.kind}</b></div><h3>{l.title}</h3><p>{l.summary}</p><div className="lesson-foot"><span>{l.duration} min</span><button>{i?"Preview":"Start"}<ChevronRight size={14}/></button></div></article>)}</div></section>
-   </div>
-  </section>
-  <footer><div><b>N</b><span>Independent learning project by Chris Hanna.<br/>Not affiliated with or endorsed by NVIDIA.</span></div><p>Build → Trace → Attack → Guard → Evaluate → Improve</p></footer>
- </main>
+ </StudioShell>
 }
 function BuildStage({validated,onValidate}:{validated:boolean;onValidate:()=>void}){
  return <section className="build-stage" aria-labelledby="build-stage-title">
