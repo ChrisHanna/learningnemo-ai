@@ -28,16 +28,24 @@ const expectedTitles=[
  "Operate, Observe, Learn, and Repeat",
 ];
 const expectedKinds=["guided","interactive","guided","interactive","guided","interactive","interactive","guided","guided","interactive","guided","guided","interactive","interactive","guided","interactive","guided","interactive","interactive","guided","guided","interactive","interactive","guided"];
+const expectedStages=["build","build","build","build","trace","trace","trace","trace","attack","attack","attack","attack","guard","guard","guard","guard","evaluate","evaluate","evaluate","evaluate","improve","improve","improve","improve"];
+const expectedUrls={
+ nooa:"https://github.com/NVIDIA-NeMo/labs-OO-Agents",
+ guardrails:"https://github.com/NVIDIA-NeMo/Guardrails",
+ evaluator:"https://github.com/NVIDIA-NeMo/Evaluator",
+ anonymizer:"https://github.com/NVIDIA-NeMo/Anonymizer",
+};
 const definitions=[...catalog.matchAll(/ \["(\d{2})","(build|trace|attack|guard|evaluate|improve)","([^"]+)","[^"]+","(guided|interactive)",\d+,\[([^\]]+)\]/g)];
 const repositories=[...catalog.matchAll(/\{id:"([^"]+)",name:"[^"]+",url:"(https:\/\/github\.com\/[^"]+)",description:"[^"]+",pinnedRef:"([^"]+)",lastVerified:"([^"]+)",packageName:"([^"]+)",status:"([^"]+)",safetyNote:"([^"]+)"\}/g)];
 const fail=(message)=>{throw new Error(`Catalog validation failed: ${message}`)};
+if(definitions.length===0) fail("could not parse lesson definitions; keep the catalog tuple format stable");
 if(definitions.length!==24) fail(`expected 24 lessons, found ${definitions.length}`);
 for(const [index,match] of definitions.entries()){
  const [,id,stage,title,kind,repositoryIds]=match;
  if(id!==String(index+1).padStart(2,"0")) fail(`lesson ${index+1} has id ${id}`);
  if(title!==expectedTitles[index]) fail(`lesson ${id} title drifted`);
  if(kind!==expectedKinds[index]) fail(`lesson ${id} mode drifted`);
- if(["build","trace","attack","guard","evaluate","improve"][Math.floor(index/4)]!==stage) fail(`lesson ${id} stage drifted`);
+ if(expectedStages[index]!==stage) fail(`lesson ${id} stage drifted`);
  for(const repository of repositoryIds.matchAll(/"([^"]+)"/g)){
   if(!["nooa","guardrails","evaluator","anonymizer"].includes(repository[1])) fail(`lesson ${id} references unknown repository ${repository[1]}`);
  }
@@ -47,7 +55,7 @@ if(definitions.filter(([, , , ,kind])=>kind==="guided").length!==12) fail("expec
 if(repositories.length!==4) fail(`expected four canonical repositories, found ${repositories.length}`);
 for(const [,id,url,ref,lastVerified,packageName,status,safetyNote] of repositories){
  if(!ref||!lastVerified||!packageName||!status||!safetyNote) fail(`source metadata missing for ${id}`);
- if(!url.startsWith("https://github.com/NVIDIA-NeMo/")) fail(`non-canonical URL for ${id}`);
+ if(expectedUrls[id]!==url) fail(`canonical URL drifted for ${id}`);
 }
 if(!catalog.includes('status:"research/alpha"')) fail("NOOA maturity/status is not research/alpha");
 if(!catalog.includes("OS-level sandbox")) fail("OS-level sandbox warning is missing");
