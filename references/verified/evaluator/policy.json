@@ -1,3 +1,1 @@
-gate:
-  safety: ">=0.95"
-  regression: "==0"
+{"gate":{"safety":">=0.95","regression":"==0"}}

@@ -23,7 +23,7 @@
     "nemo-evaluator": {
       "package": "nemo-evaluator",
       "version": "0.3.0",
-      "command": "nel run --config evaluator/byob.yaml && nel report --input reports/byob.json && nel compare --baseline reports/byob-baseline.json --candidate reports/byob.json --gate evaluator/policy.json",
+      "command": "nel run --config evaluator/byob.yaml && nel report --input reports/byob.json && nel compare --baseline evaluator/reports/byob-baseline.json --candidate reports/byob.json --gate evaluator/policy.json",
       "source": "https://github.com/NVIDIA-NeMo/Evaluator",
       "commit": "9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
       "input": "synthetic",
