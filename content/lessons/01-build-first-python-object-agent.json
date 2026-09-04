@@ -1,0 +1,47 @@
+{
+  "id": "01",
+  "title": "Build Your First Python-Object Agent",
+  "stage": "build",
+  "kind": "guided",
+  "duration": 12,
+  "outcome": "Create a real NOOA Agent whose authority-sensitive refund decision remains deterministic Python.",
+  "objectives": [
+    "Identify the Python class, docstring, type annotations, and methods that form a NOOA agent contract.",
+    "Separate deterministic policy decisions from work that may later require model generation.",
+    "Run a semantic assertion proving the class inherits from the installed nooa.Agent package."
+  ],
+  "prerequisites": [
+    "Python 3.12 or 3.13",
+    "uv installed",
+    "No model credentials required for this deterministic exercise"
+  ],
+  "concept": {
+    "title": "An agent is a Python object—not a pile of disconnected tool schemas.",
+    "body": "NOOA puts state, capabilities, prompts, and typed interfaces on one Python class. An Agent still resolves an LLM client when constructed, so this offline exercise uses NOOA's FakeLLMClient. Methods with real bodies remain ordinary deterministic Python; methods whose body is an ellipsis are generation methods handled by an LLM runtime. Authorization and policy checks should stay deterministic."
+  },
+  "exercise": {
+    "sourcePath": "exercises/nooa/lesson-01/support_agent.py",
+    "runCommand": "uv run --with 'nooa @ git+https://github.com/NVIDIA-NeMo/labs-OO-Agents.git@c28e05a4e5eeadb988cd27a31841e32b14d00f65' python exercises/nooa/lesson-01/support_agent.py",
+    "steps": [
+      "Inspect SupportAgent and confirm it subclasses nooa.Agent.",
+      "Trace the typed RefundRequest input to the typed RefundDecision output.",
+      "Run the command and confirm the semantic assertions pass.",
+      "Change days_since_delivery to 31 and predict the result before rerunning."
+    ],
+    "expectedOutput": "{\"agent\": \"SupportAgent\", \"decision\": {\"approved\": true, \"reason\": \"within_refund_window\"}, \"framework\": \"nooa\"}",
+    "checkpoint": "Why is evaluate_refund implemented with a real Python body instead of an ellipsis?"
+  },
+  "misconception": {
+    "claim": "Every method on an AI agent should be decided by the model.",
+    "correction": "NOOA supports ordinary methods. Keep permissions, invariants, and policy decisions deterministic; reserve generation methods for work that genuinely needs model reasoning."
+  },
+  "evidence": {
+    "status": "source-reviewed",
+    "label": "Source reviewed · package verification pending",
+    "sourceUrl": "https://github.com/NVIDIA-NeMo/labs-OO-Agents",
+    "sourceRef": "c28e05a4e5eeadb988cd27a31841e32b14d00f65",
+    "packageName": "nooa",
+    "python": ">=3.12,<3.14",
+    "safety": "NOOA is research/alpha software. Any exercise that executes LLM-generated code must run inside OS-level isolation; in-process validation is not a containment boundary."
+  }
+}
