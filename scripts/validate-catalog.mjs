@@ -35,7 +35,7 @@ const expectedUrls={
  evaluator:"https://github.com/NVIDIA-NeMo/Evaluator",
  anonymizer:"https://github.com/NVIDIA-NeMo/Anonymizer",
 };
-const definitions=[...catalog.matchAll(/ \["(\d{2})","(build|trace|attack|guard|evaluate|improve)","([^"]+)","[^"]+","(guided|interactive)",\d+,\[([^\]]+)\]/g)];
+const definitions=[...catalog.matchAll(/\s*\["(\d{2})","(build|trace|attack|guard|evaluate|improve)","([^"]+)","[^"]+","(guided|interactive)",\d+,\[([^\]]+)\]/g)];
 const repositories=[...catalog.matchAll(/\{id:"([^"]+)",name:"[^"]+",url:"(https:\/\/github\.com\/[^"]+)",description:"[^"]+",pinnedRef:"([^"]+)",lastVerified:"([^"]+)",packageName:"([^"]+)",status:"([^"]+)",safetyNote:"([^"]+)"\}/g)];
 const fail=(message)=>{throw new Error(`Catalog validation failed: ${message}`)};
 if(definitions.length===0) fail("could not parse lesson definitions; keep the catalog tuple format stable");

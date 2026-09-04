@@ -22,7 +22,11 @@ export const stages:{id:StageId;label:string;promise:string}[]=[
 
 type LessonDefinition=[string,StageId,string,string,LessonKind,number,CanonicalRepositoryId[],string[]];
 type Lesson={id:string;stage:StageId;title:string;summary:string;kind:LessonKind;duration:number;repositories:CanonicalRepositoryId[];technologies:string[];sources:RepositorySource[]};
-const sourceFor=(ids:CanonicalRepositoryId[])=>ids.map(repository=>({repository,...repositories.find(item=>item.id===repository)!}));
+const sourceFor=(ids:CanonicalRepositoryId[])=>ids.map(repository=>{
+ const source=repositories.find(item=>item.id===repository);
+ if(!source) throw new Error(`Unknown catalog repository: ${repository}`);
+ return {repository,...source};
+});
 
 const definitions:LessonDefinition[]=[
  ["01","build","Build Your First Python-Object Agent","Create a narrow support agent from explicit Python objects and inspect its authority before it runs.","guided",12,["nooa"],["NOOA","Python objects"]],
