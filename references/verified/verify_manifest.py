@@ -11,7 +11,8 @@ REQUIRED = {"package", "version", "command", "source", "commit", "input", "prove
 
 
 def main() -> None:
-    assert len(MANIFEST["paths"]) == 4
+    if len(MANIFEST["paths"]) != 4:
+        raise SystemExit("manifest must contain exactly 4 paths")
     for name, path in MANIFEST["paths"].items():
         missing = REQUIRED - path.keys()
         if missing:

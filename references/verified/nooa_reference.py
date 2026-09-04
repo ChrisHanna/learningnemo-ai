@@ -3,6 +3,7 @@
 from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
+import tempfile
 
 
 @dataclass(frozen=True)
@@ -12,7 +13,8 @@ class Step:
 
 
 trace = Step("support_agent", (Step("request"), Step("policy", (Step("deny_token"),))))
-Path("/tmp/nooa-atif.json").write_text(
+output = Path(tempfile.gettempdir()) / "nooa-atif.json"
+output.write_text(
     json.dumps({"schema_version": "ATIF-v1", "steps": [asdict(trace)]}, indent=2) + "\n"
 )
-print("/tmp/nooa-atif.json")
+print(output)
