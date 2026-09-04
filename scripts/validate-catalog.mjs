@@ -33,7 +33,7 @@ if(data.lessons.filter(lesson=>lesson.kind==="guided").length!==12) fail("expect
 if(data.repositories.length!==4) fail(`expected four canonical repositories, found ${data.repositories.length}`);
 for(const repository of data.repositories){
  if(expectedRepositories[repository.id]!==repository.url) fail(`canonical URL drifted for ${repository.id}`);
- if(!/^(v\d+\.\d+\.\d+|[0-9a-f]{40})$/.test(repository.pinnedRef)) fail(`unpinned source ref for ${repository.id}: must be vX.Y.Z or a 40-character SHA`);
+ if(!/^(v\d+\.\d+\.\d+|[0-9a-fA-F]{40})$/.test(repository.pinnedRef)) fail(`unpinned source ref for ${repository.id}: must be vX.Y.Z or a 40-character SHA`);
  for(const field of ["lastSourceReviewed","packageName","cliName","status","safetyNote"]) if(!repository[field]) fail(`source metadata missing for ${repository.id}: ${field}`);
 }
 const nooa=data.repositories.find(repository=>repository.id==="nooa");
