@@ -1,8 +1,0 @@
-{
-  "completed_benchmarks": {
-    "./evaluator/byob.py": {
-      "bundle_path": "reports/candidate/synthetic_support_safety"
-    }
-  },
-  "failed_benchmarks": {}
-}

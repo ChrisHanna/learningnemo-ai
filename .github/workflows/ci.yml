@@ -32,23 +32,16 @@ jobs:
         include:
           - name: nooa
             requirements: nooa.txt
-            run: python nooa_reference.py
+            script: run-nooa.sh
           - name: nemoguardrails
             requirements: nemoguardrails.txt
-            run: python guardrails_attack.py
+            script: run-guardrails.sh
           - name: nemo-evaluator
             requirements: nemo-evaluator.txt
-            run: |
-              python mock_model.py &
-              nel validate -b ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --samples 10
-              nel eval run --bench ./evaluator/byob.py --model-url http://127.0.0.1:8000/v1 --model-id synthetic --max-problems 10 --output-dir reports/candidate
-              nel eval report reports/candidate -f json -o reports/candidate.json
-              cp -a reports/candidate reports/baseline
-              nel compare reports/baseline reports/candidate --strict
-              nel gate reports/baseline reports/candidate --policy evaluator/policy.yaml --strict
+            script: run-evaluator.sh
           - name: nemo-anonymizer
             requirements: nemo-anonymizer.txt
-            run: anonymizer validate --source synthetic/customers.csv --text-column text --replace redact --no-emit-telemetry && anonymizer preview --source synthetic/customers.csv --text-column text --replace redact --num_records 1 --no-emit-telemetry && anonymizer run --source synthetic/customers.csv --text-column text --replace redact --output /tmp/anonymized-redact.csv --no-emit-telemetry && anonymizer preview --source synthetic/customers.csv --text-column text --replace hash --num_records 1 --no-emit-telemetry && anonymizer run --source synthetic/customers.csv --text-column text --replace hash --output /tmp/anonymized-hash.csv --no-emit-telemetry
+            script: run-anonymizer.sh
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -61,7 +54,7 @@ jobs:
         working-directory: references/verified
         run: |
           set -o pipefail
-          eval "${{ matrix.run }}" 2>&1 | tee "$RUNNER_TEMP/output.txt"
+          bash "${{ matrix.script }}" 2>&1 | tee "$RUNNER_TEMP/output.txt"
       - name: Capture sanitized evidence
         working-directory: references/verified
         run: |

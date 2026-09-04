@@ -145,3 +145,6 @@ vite.config.ts.timestamp-*
 # Python bytecode
 __pycache__/
 *.py[cod]
+
+# Generated reference reports
+references/verified/reports/

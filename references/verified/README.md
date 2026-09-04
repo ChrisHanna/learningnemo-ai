@@ -7,7 +7,7 @@ resolved package version, source commit, UTC timestamp, and provenance.
 
 | Path | Pinned package | Exact executable path |
 | --- | --- | --- |
-| NOOA (research/alpha) | `nooa==0.0.9` | `trace-explorer` |
+| NOOA (research/alpha) | `nooa==0.0.9` | `python nooa_reference.py` |
 | Guardrails | `nemoguardrails==0.24.0` | Python API |
 | Evaluator | `nemo-evaluator==0.3.0` | `nel` |
 | Anonymizer | `nemo-anonymizer==0.3.3` | `anonymizer validate/preview/run` |
