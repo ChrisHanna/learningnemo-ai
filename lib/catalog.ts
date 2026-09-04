@@ -1,36 +1,29 @@
+import data from "@/lib/catalog-data.json";
+
 export type StageId="build"|"trace"|"attack"|"guard"|"evaluate"|"improve";
-export const stages:{id:StageId;label:string;promise:string}[]=[
- {id:"build",label:"Build",promise:"Configure a NeMo workflow—and its authority."},
- {id:"trace",label:"Trace",promise:"See every workflow event, token, and tool call."},
- {id:"attack",label:"Attack",promise:"Break trust boundaries before users do."},
- {id:"guard",label:"Guard",promise:"Put NeMo Guardrails at the right enforcement layer."},
- {id:"evaluate",label:"Evaluate",promise:"Measure quality, safety, cost, and latency."},
- {id:"improve",label:"Improve",promise:"Optimize, release, observe, and repeat."},
-];
-type Lesson={id:string;stage:StageId;title:string;summary:string;kind:"interactive"|"guided";duration:number;technologies:string[]};
-export const catalog:Lesson[]=[
- ["01","build","Wrap an Existing Agent with NeMo Agent Toolkit","Add configuration, instrumentation, and evaluation without rewriting the existing agent.","guided",12,["NeMo Agent Toolkit"]],
- ["02","build","Configure a NeMo Workflow with YAML","Define the support workflow, functions, models, inputs, outputs, and failure behavior.","interactive",18,["NeMo Agent Toolkit","YAML"]],
- ["03","build","Build Permission-Aware Enterprise RAG","Ground responses in enterprise knowledge while preserving document-level authorization.","guided",15,["NeMo Agent Toolkit","RAG"]],
- ["04","build","Add Authenticated MCP Tools","Discover narrow MCP functions, validate parameters, and preserve identity and minimal scopes.","interactive",20,["NeMo Agent Toolkit","MCP","OAuth 2.0"]],
- ["05","trace","Understand NeMo Workflow Events","Read model, retrieval, function, policy, and tool activity as one correlated run.","guided",12,["NeMo Agent Toolkit"]],
- ["06","trace","Explore an Agent Trajectory","Inspect the recorded support-agent trajectory and locate its first consequential decision.","interactive",16,["ATIF","NeMo Agent Toolkit"]],
- ["07","trace","Profile Tokens, Latency, and Tool Calls","Use workflow profiling to locate cost, latency, and execution bottlenecks.","interactive",18,["NeMo Agent Toolkit Profiler"]],
- ["08","trace","Export Telemetry Without Exposing Sensitive Content","Design OpenTelemetry export and content-capture policies for production observability.","guided",14,["OpenTelemetry","NeMo Agent Toolkit"]],
- ["09","attack","Threat-Model the Support Agent","Map assets, actors, trust boundaries, abuse paths, and consequences before testing.","guided",15,["Threat Modeling"]],
- ["10","attack","Replay Prompt-Injection and Jailbreak Attacks","Trace how an adversarial instruction crosses retrieval and tool boundaries.","interactive",18,["NeMo Guardrails","NemoGuard JailbreakDetect"]],
- ["11","attack","Attack RAG Permissions and Grounding","Test poisoning, overbroad retrieval, missing filters, and unsupported claims.","guided",16,["NeMo Guardrails","RAG"]],
- ["12","attack","Exploit Tool Calls, MCP, and Agent Handoffs","Follow authority across tools and agents to expose confused-deputy and scope failures.","guided",15,["MCP","NeMo Agent Toolkit"]],
- ["13","guard","Configure the Five Rails","Apply input, dialog, retrieval, execution, and output rails to the attack path.","interactive",22,["NeMo Guardrails","Colang"]],
- ["14","guard","Validate Tool Inputs and Outputs","Block unsafe tool names, arguments, results, and execution context before side effects occur.","interactive",20,["NeMo Guardrails","IORails"]],
- ["15","guard","Protect PII, Secrets, and Runtime Boundaries","Layer data handling, credential isolation, dependency controls, and sandboxing behind guardrails.","guided",17,["NeMo Guardrails"]],
- ["16","guard","Compare Jailbreak-Detection Strategies","Test heuristic, model-based, and NIM-backed detection against common attacks and benign prompts.","interactive",19,["NeMo Guardrails","NemoGuard NIM"]],
- ["17","evaluate","Build a NeMo Evaluation Dataset","Create normal, edge, and adversarial cases with defensible expected behavior.","guided",14,["NeMo Agent Toolkit"]],
- ["18","evaluate","Run nat eval","Use built-in and custom evaluators to measure task quality, groundedness, and safety.","interactive",20,["NeMo Agent Toolkit","nat eval"]],
- ["19","evaluate","Compare Agent Versions","Run V1 and V2 on identical data and expose quality, safety, cost, and latency tradeoffs.","interactive",18,["NeMo Agent Toolkit"]],
- ["20","evaluate","Convert Attacks into Regression Tests","Turn every discovered failure into a repeatable release-blocking evaluation case.","guided",16,["NeMo Agent Toolkit"]],
- ["21","improve","Choose the Simplest Safe Workflow","Decide when deterministic automation, RAG, or agentic orchestration is justified.","guided",13,["NeMo Agent Toolkit"]],
- ["22","improve","Optimize with nat optimize","Tune workflow parameters against explicit evaluation objectives and constraints.","interactive",20,["NeMo Agent Toolkit","nat optimize"]],
- ["23","improve","Pass the Production Release Gate","Release, revise, or reject using governance, evaluation, rollback, and ownership evidence.","interactive",21,["NeMo Agent Toolkit","NeMo Guardrails"]],
- ["24","improve","Operate, Observe, and Repeat","Convert production telemetry and residual risk into the next measurable improvement loop.","guided",12,["OpenTelemetry","NeMo Agent Toolkit"]],
-].map(([id,stage,title,summary,kind,duration,technologies])=>({id,stage,title,summary,kind,duration,technologies})) as Lesson[];
+export type LessonKind="interactive"|"guided";
+export type CanonicalRepositoryId="nooa"|"guardrails"|"evaluator"|"anonymizer";
+export type RepositorySource={
+ repository:CanonicalRepositoryId;
+ pinnedRef:string;
+ lastSourceReviewed:string;
+ packageName:string;
+ cliName:string;
+ colangVersion?:string;
+ status:"research/alpha"|"active";
+ safetyNote:string;
+};
+export type CanonicalRepository=Omit<RepositorySource,"repository">&{id:CanonicalRepositoryId;name:string;url:string;description:string};
+export type Lesson={id:string;stage:StageId;title:string;summary:string;kind:LessonKind;duration:number;repositories:CanonicalRepositoryId[];technologies:string[];sources:RepositorySource[]};
+type CatalogData={stages:{id:StageId;label:string;promise:string}[];repositories:CanonicalRepository[];lessons:Omit<Lesson,"sources">[]};
+
+const catalogData=data as CatalogData;
+export const stages=catalogData.stages;
+export const repositories=catalogData.repositories;
+const sourceFor=(ids:CanonicalRepositoryId[])=>ids.map(repository=>{
+ const source=repositories.find(item=>item.id===repository);
+ if(!source) throw new Error(`Unknown catalog repository: ${repository}`);
+ const {pinnedRef,lastSourceReviewed,packageName,cliName,colangVersion,status,safetyNote}=source;
+ return {repository,pinnedRef,lastSourceReviewed,packageName,cliName,colangVersion,status,safetyNote};
+});
+export const catalog=catalogData.lessons.map(lesson=>({...lesson,sources:sourceFor(lesson.repositories)}));

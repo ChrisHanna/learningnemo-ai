@@ -1,0 +1,460 @@
+{
+  "stages": [
+    {
+      "id": "build",
+      "label": "Build",
+      "promise": "Build agents from typed objects—and explicit authority."
+    },
+    {
+      "id": "trace",
+      "label": "Trace",
+      "promise": "See every event, token, and tool call in the hierarchy."
+    },
+    {
+      "id": "attack",
+      "label": "Attack",
+      "promise": "Break trust boundaries before users do."
+    },
+    {
+      "id": "guard",
+      "label": "Guard",
+      "promise": "Put NeMo Guardrails at the right enforcement layer."
+    },
+    {
+      "id": "evaluate",
+      "label": "Evaluate",
+      "promise": "Measure quality, safety, cost, and latency."
+    },
+    {
+      "id": "improve",
+      "label": "Improve",
+      "promise": "Turn evidence into the next safer version."
+    }
+  ],
+  "repositories": [
+    {
+      "id": "nooa",
+      "name": "NVIDIA-labs Object Oriented Agents",
+      "url": "https://github.com/NVIDIA-NeMo/labs-OO-Agents",
+      "description": "Research agents built from typed Python objects.",
+      "pinnedRef": "c28e05a4e5eeadb988cd27a31841e32b14d00f65",
+      "lastSourceReviewed": "2026-09-04",
+      "packageName": "nooa",
+      "cliName": "nooa",
+      "status": "research/alpha",
+      "safetyNote": "Code execution requires an OS-level sandbox; do not run untrusted agent code on the host."
+    },
+    {
+      "id": "guardrails",
+      "name": "NeMo Guardrails",
+      "url": "https://github.com/NVIDIA-NeMo/Guardrails",
+      "description": "Programmable rails for controlling LLM application behavior.",
+      "pinnedRef": "39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
+      "lastSourceReviewed": "2026-09-04",
+      "packageName": "nemoguardrails",
+      "cliName": "nemoguardrails",
+      "colangVersion": "2.0",
+      "status": "active",
+      "safetyNote": "Guardrails are an enforcement layer, not a replacement for permissions, isolation, or secret management."
+    },
+    {
+      "id": "evaluator",
+      "name": "NeMo Evaluator",
+      "url": "https://github.com/NVIDIA-NeMo/Evaluator",
+      "description": "Benchmarks, solvers, and reports for repeatable AI evaluation.",
+      "pinnedRef": "9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
+      "lastSourceReviewed": "2026-09-04",
+      "packageName": "nemo-evaluator",
+      "cliName": "nel",
+      "status": "active",
+      "safetyNote": "Evaluation results are evidence for a decision, not proof of production safety."
+    },
+    {
+      "id": "anonymizer",
+      "name": "NeMo Anonymizer",
+      "url": "https://github.com/NVIDIA-NeMo/Anonymizer",
+      "description": "Detect and transform sensitive data before it reaches downstream systems.",
+      "pinnedRef": "29fd40654e6110fed5f1dea293e1c9049fd5c2d2",
+      "lastSourceReviewed": "2026-09-04",
+      "packageName": "nemo-anonymizer",
+      "cliName": "anonymizer",
+      "status": "active",
+      "safetyNote": "Anonymizer does not replace document permissions, secret management, encryption, retention rules, or sandboxing."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "01",
+      "stage": "build",
+      "title": "Build Your First Python-Object Agent",
+      "summary": "Create a narrow support agent from explicit Python objects and inspect its authority before it runs.",
+      "kind": "guided",
+      "duration": 12,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Python objects"
+      ]
+    },
+    {
+      "id": "02",
+      "stage": "build",
+      "title": "Define Typed Generation Methods and Contracts",
+      "summary": "Turn a support outcome into typed generation methods with explicit inputs, outputs, and failure states.",
+      "kind": "interactive",
+      "duration": 18,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Python typing"
+      ]
+    },
+    {
+      "id": "03",
+      "stage": "build",
+      "title": "Keep Authorization and Verification in Deterministic Python",
+      "summary": "Keep permissions and verification in code instead of delegating trust decisions to the model.",
+      "kind": "guided",
+      "duration": 15,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Authorization"
+      ]
+    },
+    {
+      "id": "04",
+      "stage": "build",
+      "title": "Add a Scoped MCP Capability",
+      "summary": "Add one authenticated MCP capability with narrow scope, validated arguments, and caller identity.",
+      "kind": "interactive",
+      "duration": 20,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "MCP"
+      ]
+    },
+    {
+      "id": "05",
+      "stage": "trace",
+      "title": "Understand NOOA Events and Trace Hierarchy",
+      "summary": "Read object, agent, model, retrieval, and tool events as one correlated hierarchy.",
+      "kind": "guided",
+      "duration": 12,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Events"
+      ]
+    },
+    {
+      "id": "06",
+      "stage": "trace",
+      "title": "Inspect a Nested Agent Trajectory",
+      "summary": "Follow a nested support-agent trajectory and locate its first consequential decision.",
+      "kind": "interactive",
+      "duration": 16,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Trajectory"
+      ]
+    },
+    {
+      "id": "07",
+      "stage": "trace",
+      "title": "Export an ATIF Trajectory",
+      "summary": "Export a trace as ATIF while preserving event order, provenance, and failure context.",
+      "kind": "interactive",
+      "duration": 18,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "ATIF"
+      ]
+    },
+    {
+      "id": "08",
+      "stage": "trace",
+      "title": "Observe Runs Without Leaking Sensitive Content",
+      "summary": "Design telemetry and content-capture policies that keep sensitive prompts and results out of exported runs.",
+      "kind": "guided",
+      "duration": 14,
+      "repositories": [
+        "nooa",
+        "anonymizer"
+      ],
+      "technologies": [
+        "NOOA",
+        "NeMo Anonymizer",
+        "OpenTelemetry"
+      ]
+    },
+    {
+      "id": "09",
+      "stage": "attack",
+      "title": "Threat-Model the Code-Executing Support Agent",
+      "summary": "Map assets, actors, trust boundaries, abuse paths, and OS-level execution consequences.",
+      "kind": "guided",
+      "duration": 15,
+      "repositories": [
+        "nooa"
+      ],
+      "technologies": [
+        "NOOA",
+        "Threat modeling"
+      ]
+    },
+    {
+      "id": "10",
+      "stage": "attack",
+      "title": "Replay Jailbreak and Indirect Prompt-Injection Attacks",
+      "summary": "Replay direct jailbreaks and retrieval-borne instructions across the agent boundary.",
+      "kind": "interactive",
+      "duration": 18,
+      "repositories": [
+        "guardrails",
+        "nooa"
+      ],
+      "technologies": [
+        "NeMo Guardrails",
+        "NOOA"
+      ]
+    },
+    {
+      "id": "11",
+      "stage": "attack",
+      "title": "Attack Retrieval, Tools, MCP, and Agent Handoffs",
+      "summary": "Test poisoning, overbroad retrieval, unsafe tool results, and authority expansion across handoffs.",
+      "kind": "guided",
+      "duration": 16,
+      "repositories": [
+        "nooa",
+        "guardrails"
+      ],
+      "technologies": [
+        "NOOA",
+        "NeMo Guardrails",
+        "MCP"
+      ]
+    },
+    {
+      "id": "12",
+      "stage": "attack",
+      "title": "Find PII Leakage Across Prompts, Traces, and Providers",
+      "summary": "Find sensitive data crossing prompts, traces, provider boundaries, and retained artifacts.",
+      "kind": "guided",
+      "duration": 15,
+      "repositories": [
+        "anonymizer"
+      ],
+      "technologies": [
+        "NeMo Anonymizer",
+        "PII"
+      ]
+    },
+    {
+      "id": "13",
+      "stage": "guard",
+      "title": "Configure NeMo Guardrails’ Five Rail Types",
+      "summary": "Apply input, dialog, retrieval, execution/tool, and output rails using version-declared Colang.",
+      "kind": "interactive",
+      "duration": 22,
+      "repositories": [
+        "guardrails"
+      ],
+      "technologies": [
+        "NeMo Guardrails",
+        "Colang 2.0"
+      ]
+    },
+    {
+      "id": "14",
+      "stage": "guard",
+      "title": "Enforce Tool Inputs, Outputs, and Side Effects",
+      "summary": "Validate tool names, arguments, results, execution context, permissions, and side effects.",
+      "kind": "interactive",
+      "duration": 20,
+      "repositories": [
+        "guardrails"
+      ],
+      "technologies": [
+        "NeMo Guardrails",
+        "Tool rails"
+      ]
+    },
+    {
+      "id": "15",
+      "stage": "guard",
+      "title": "Detect and Transform Sensitive Data with NeMo Anonymizer",
+      "summary": "Compare redact, annotate, deterministic hash, and contextual substitute strategies.",
+      "kind": "guided",
+      "duration": 17,
+      "repositories": [
+        "anonymizer"
+      ],
+      "technologies": [
+        "NeMo Anonymizer",
+        "PII"
+      ]
+    },
+    {
+      "id": "16",
+      "stage": "guard",
+      "title": "Compare Jailbreak Controls and Runtime Boundaries",
+      "summary": "Compare heuristic and model-based controls with runtime isolation and their residual bypass risk.",
+      "kind": "interactive",
+      "duration": 19,
+      "repositories": [
+        "guardrails",
+        "nooa"
+      ],
+      "technologies": [
+        "NeMo Guardrails",
+        "NOOA"
+      ]
+    },
+    {
+      "id": "17",
+      "stage": "evaluate",
+      "title": "Build a NeMo Evaluator BYOB Safety Benchmark",
+      "summary": "Build a bring-your-own-benchmark safety dataset with defensible cases and expected behavior.",
+      "kind": "guided",
+      "duration": 14,
+      "repositories": [
+        "evaluator"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "BYOB"
+      ]
+    },
+    {
+      "id": "18",
+      "stage": "evaluate",
+      "title": "Execute and Report a `nel eval run`",
+      "summary": "Run the NeMo Evaluator CLI and report benchmark results with provenance and limitations.",
+      "kind": "interactive",
+      "duration": 20,
+      "repositories": [
+        "evaluator"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "nel eval run"
+      ]
+    },
+    {
+      "id": "19",
+      "stage": "evaluate",
+      "title": "Compare Baseline and Guarded Versions with `nel compare`",
+      "summary": "Compare identical cases across baseline and guarded versions without inventing unsupported metrics.",
+      "kind": "interactive",
+      "duration": 18,
+      "repositories": [
+        "evaluator",
+        "guardrails"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "nel compare"
+      ]
+    },
+    {
+      "id": "20",
+      "stage": "evaluate",
+      "title": "Convert Every Attack into a Regression Case",
+      "summary": "Turn each discovered failure into a repeatable evaluation case and release gate input.",
+      "kind": "guided",
+      "duration": 16,
+      "repositories": [
+        "evaluator"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "Regression testing"
+      ]
+    },
+    {
+      "id": "21",
+      "stage": "improve",
+      "title": "Choose the Simplest Safe Agent Architecture",
+      "summary": "Decide when deterministic code, an object agent, retrieval, or guardrails is justified.",
+      "kind": "guided",
+      "duration": 13,
+      "repositories": [
+        "nooa",
+        "guardrails"
+      ],
+      "technologies": [
+        "NOOA",
+        "NeMo Guardrails"
+      ]
+    },
+    {
+      "id": "22",
+      "stage": "improve",
+      "title": "Define a Decision-Grade `nel gate`",
+      "summary": "Define explicit quality, safety, cost, latency, and evidence thresholds for a release decision.",
+      "kind": "interactive",
+      "duration": 20,
+      "repositories": [
+        "evaluator"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "nel gate"
+      ]
+    },
+    {
+      "id": "23",
+      "stage": "improve",
+      "title": "Pass the Production Release Gate",
+      "summary": "Release, revise, or reject using ownership, evaluation, rollback, and isolation evidence.",
+      "kind": "interactive",
+      "duration": 21,
+      "repositories": [
+        "evaluator",
+        "guardrails",
+        "anonymizer"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "NeMo Guardrails",
+        "NeMo Anonymizer"
+      ]
+    },
+    {
+      "id": "24",
+      "stage": "improve",
+      "title": "Operate, Observe, Learn, and Repeat",
+      "summary": "Convert production observations and residual risk into the next measurable improvement loop.",
+      "kind": "guided",
+      "duration": 12,
+      "repositories": [
+        "evaluator",
+        "anonymizer"
+      ],
+      "technologies": [
+        "NeMo Evaluator",
+        "NeMo Anonymizer",
+        "OpenTelemetry"
+      ]
+    }
+  ]
+}
