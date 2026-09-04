@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useMemo,useState} from "react";
+import {useEffect,useMemo,useRef,useState} from "react";
 import {ArrowRight,Braces,Check,ChevronRight,LockKeyhole,Play,X} from "lucide-react";
 import {catalog,stages,type StageId} from "@/lib/catalog";
 import {baselineDemo,guardedDemo} from "@/lib/demo-fixtures";
@@ -27,7 +27,9 @@ export default function Home(){
  </StudioShell>
 }
 function LessonPanel({id,title,content,onClose}:{id:string;title:string;content:LessonContent;onClose:()=>void}){
- return <section className="lesson-panel" aria-labelledby={`lesson-${id}-title`}><button className="lesson-close-button" onClick={onClose} aria-label="Close lesson"><X size={16}/></button><div className="lesson-panel-copy"><p className="eyebrow">LESSON {id} · AUTHORING NOTES</p><h2 id={`lesson-${id}-title`}>{title}</h2><p>{content.brief}</p><div className="lesson-objective"><small>OUTCOME</small><strong>{content.objective}</strong></div></div><div className="lesson-panel-work"><div><small>WORKFLOW</small><ol>{content.steps.map(step=><li key={step}>{step}</li>)}</ol></div>{content.example&&<pre><code>{content.example}</code></pre>}<div className="lesson-evidence"><small>PROOF OF COMPLETION</small><span>{content.evidence}</span></div></div></section>;
+ const closeButton=useRef<HTMLButtonElement>(null);
+ useEffect(()=>{closeButton.current?.focus()},[]);
+ return <section className="lesson-panel" aria-labelledby={`lesson-${id}-title`}><button ref={closeButton} className="lesson-close-button" onClick={onClose} aria-label="Close lesson"><X size={16}/></button><div className="lesson-panel-copy"><p className="eyebrow">LESSON {id} · AUTHORING NOTES</p><h2 id={`lesson-${id}-title`}>{title}</h2><p>{content.brief}</p><div className="lesson-objective"><small>OUTCOME</small><strong>{content.objective}</strong></div></div><div className="lesson-panel-work"><div><small>WORKFLOW</small><ol>{content.steps.map(step=><li key={step}>{step}</li>)}</ol></div>{content.example&&<pre><code>{content.example}</code></pre>}<div className="lesson-evidence"><small>PROOF OF COMPLETION</small><span>{content.evidence}</span></div></div></section>;
 }
 function BuildStage({validated,onValidate}:{validated:boolean;onValidate:()=>void}){
  return <section className="build-stage" aria-labelledby="build-stage-title">
