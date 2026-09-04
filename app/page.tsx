@@ -53,7 +53,7 @@ function ImproveStage({selected,released,onSelect,onRelease}:{selected:string;re
   <div className="improvement-card">
    <div className="improvement-head"><div><small>nat optimize / CANDIDATES</small><strong>Compare controlled changes</strong></div><span className={released?"validated":""}>{released?"OBSERVING":"DRAFT"}</span></div>
    <div className="candidate-list">{improvementCandidates.map(item=><button key={item.id} className={item.id===selected?"selected":""} onClick={()=>onSelect(item.id)}><b>{item.name}</b><span>{item.change}</span><small>Quality {item.quality} · Safety {item.safety}</small></button>)}</div>
-   <div className="selected-result"><div><small>SELECTED WORKFLOW</small><strong>{candidate.name}</strong></div><div className="result-metrics"><span>Quality <b>{candidate.quality}</b></span><span>Safety <b>{candidate.safety}</b></span><span>Cost <b>{candidate.cost}</b></span><span>Latency <b>{candidate.latency}</b></span></div><button className="primary" onClick={onRelease} disabled={released}>{released?"Release complete":"Approve and release"}<ArrowRight size={15}/></button></div>
+   <div className="selected-result"><div><small>SELECTED WORKFLOW</small><strong>{candidate.name}</strong></div><div className="result-metrics"><span>Quality <b>{candidate.quality}</b></span><span>Safety <b>{candidate.safety}</b></span><span>Cost <b>{candidate.cost}</b></span><span>Latency <b>{candidate.latency}</b></span></div><button className="primary" onClick={onRelease} disabled={released}>{released?"Release complete":<>Approve and release <ArrowRight size={15}/></>}</button></div>
   </div>
  </section>
 }
