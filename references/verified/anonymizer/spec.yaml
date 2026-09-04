@@ -1,0 +1,6 @@
+input: synthetic/customers.jsonl
+output: /tmp/anonymized-customers.jsonl
+strategies:
+  email: redact
+  phone: substitute
+  customer_id: hash

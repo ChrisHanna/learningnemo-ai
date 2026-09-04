@@ -23,6 +23,37 @@ jobs:
         working-directory: references/nemo
         run: python support_agent.py --check-evidence
 
+  verified-nemo:
+    name: Verified ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: nooa
+            requirements: nooa.txt
+            run: python nooa_reference.py && trace-explorer export --format atif --input synthetic/nooa_trace.json
+          - name: nemoguardrails
+            requirements: nemoguardrails.txt
+            run: python guardrails_attack.py
+          - name: nemo-evaluator
+            requirements: nemo-evaluator.txt
+            run: nel run --config evaluator/byob.yaml && nel report --input reports/byob.json && nel compare --baseline evaluator/reports/byob-baseline.json --candidate reports/byob.json --gate evaluator/policy.json
+          - name: nemo-anonymizer
+            requirements: nemo-anonymizer.txt
+            run: anonymizer validate --spec-file anonymizer/spec.yaml && anonymizer preview --spec-file anonymizer/spec.yaml && anonymizer run --spec-file anonymizer/spec.yaml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned project
+        working-directory: references/verified
+        run: python -m pip install --requirement requirements/${{ matrix.requirements }}
+      - name: Execute synthetic reference path
+        working-directory: references/verified
+        run: ${{ matrix.run }}
+
   web:
     name: Web app
     runs-on: ubuntu-latest

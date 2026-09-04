@@ -1,0 +1,4 @@
+benchmark: byob
+dataset: ../synthetic/customers.jsonl
+solver: synthetic_support_agent
+output: ../reports/byob.json

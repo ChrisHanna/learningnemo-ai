@@ -1,0 +1,44 @@
+{
+  "paths": {
+    "nooa": {
+      "package": "nooa",
+      "version": "0.0.9",
+      "command": "trace-explorer export --format atif --input synthetic/nooa_trace.json",
+      "source": "https://github.com/NVIDIA-NeMo/labs-OO-Agents",
+      "commit": "c28e05a4e5eeadb988cd27a31841e32b14d00f65",
+      "input": "synthetic",
+      "provenance": "https://github.com/NVIDIA-NeMo/labs-OO-Agents/tree/c28e05a4e5eeadb988cd27a31841e32b14d00f65",
+      "evidence": {"timestamp": "CI-generated UTC", "sanitized_output": "ATIF nested trace exported"}
+    },
+    "nemoguardrails": {
+      "package": "nemoguardrails",
+      "version": "0.24.0",
+      "command": "python guardrails_attack.py",
+      "source": "https://github.com/NVIDIA/NeMo-Guardrails",
+      "commit": "29fd40654e6110fed5f1dea293e1c9049fd5c2d2",
+      "input": "synthetic",
+      "provenance": "https://github.com/NVIDIA/NeMo-Guardrails/tree/29fd40654e6110fed5f1dea293e1c9049fd5c2d2",
+      "evidence": {"timestamp": "CI-generated UTC", "sanitized_output": "before attack / after blocked"}
+    },
+    "nemo-evaluator": {
+      "package": "nemo-evaluator",
+      "version": "0.3.0",
+      "command": "nel run --config evaluator/byob.yaml && nel report --input reports/byob.json && nel compare --baseline reports/byob-baseline.json --candidate reports/byob.json --gate evaluator/policy.json",
+      "source": "https://github.com/NVIDIA-NeMo/Evaluator",
+      "commit": "9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
+      "input": "synthetic",
+      "provenance": "https://github.com/NVIDIA-NeMo/Evaluator/tree/9758d8d5508e0d1bea79cb99ed56d595a1c3acdc",
+      "evidence": {"timestamp": "CI-generated UTC", "sanitized_output": "BYOB report compared and policy gate passed"}
+    },
+    "nemo-anonymizer": {
+      "package": "nemo-anonymizer",
+      "version": "0.3.3",
+      "command": "anonymizer validate --spec-file anonymizer/spec.yaml && anonymizer preview --spec-file anonymizer/spec.yaml && anonymizer run --spec-file anonymizer/spec.yaml",
+      "source": "https://github.com/NVIDIA-NeMo/Anonymizer",
+      "commit": "39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
+      "input": "synthetic",
+      "provenance": "https://github.com/NVIDIA-NeMo/Anonymizer/tree/39b9c5b09e41a4ee71156effdd7ca6f02e98ead4",
+      "evidence": {"timestamp": "CI-generated UTC", "sanitized_output": "redact / substitute / hash"}
+    }
+  }
+}

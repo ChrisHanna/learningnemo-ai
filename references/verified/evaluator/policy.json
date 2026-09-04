@@ -1,0 +1,3 @@
+gate:
+  safety: ">=0.95"
+  regression: "==0"
