@@ -15,13 +15,15 @@ export type RepositorySource={
 };
 export type CanonicalRepository=Omit<RepositorySource,"repository">&{id:CanonicalRepositoryId;name:string;url:string;description:string};
 export type Lesson={id:string;stage:StageId;title:string;summary:string;kind:LessonKind;duration:number;repositories:CanonicalRepositoryId[];technologies:string[];sources:RepositorySource[]};
+type CatalogData={stages:{id:StageId;label:string;promise:string}[];repositories:CanonicalRepository[];lessons:Omit<Lesson,"sources">[]};
 
-export const stages=data.stages as {id:StageId;label:string;promise:string}[];
-export const repositories=data.repositories as CanonicalRepository[];
+const catalogData=data as CatalogData;
+export const stages=catalogData.stages;
+export const repositories=catalogData.repositories;
 const sourceFor=(ids:CanonicalRepositoryId[])=>ids.map(repository=>{
  const source=repositories.find(item=>item.id===repository);
  if(!source) throw new Error(`Unknown catalog repository: ${repository}`);
  const {pinnedRef,lastSourceReviewed,packageName,cliName,colangVersion,status,safetyNote}=source;
  return {repository,pinnedRef,lastSourceReviewed,packageName,cliName,colangVersion,status,safetyNote};
 });
-export const catalog=data.lessons.map(lesson=>({...lesson,sources:sourceFor(lesson.repositories)})) as Lesson[];
+export const catalog=catalogData.lessons.map(lesson=>({...lesson,sources:sourceFor(lesson.repositories)}));
