@@ -36,11 +36,14 @@ for(const repository of data.repositories){
  if(!/^(v\d+\.\d+\.\d+|[0-9a-f]{40})$/.test(repository.pinnedRef)) fail(`unpinned source ref for ${repository.id}`);
  for(const field of ["lastSourceReviewed","packageName","cliName","status","safetyNote"]) if(!repository[field]) fail(`source metadata missing for ${repository.id}: ${field}`);
 }
-if(data.repositories.find(repository=>repository.id==="nooa").packageName!=="nooa") fail("NOOA package identity drifted");
-if(data.repositories.find(repository=>repository.id==="nooa").status!=="research/alpha") fail("NOOA maturity/status is not research/alpha");
-if(!data.repositories.find(repository=>repository.id==="guardrails").colangVersion) fail("Guardrails Colang version is missing");
-if(!data.repositories.find(repository=>repository.id==="nooa").safetyNote.includes("OS-level sandbox")) fail("OS-level sandbox warning is missing");
-if(!data.repositories.find(repository=>repository.id==="anonymizer").safetyNote.includes("does not replace document permissions")) fail("Anonymizer safety note is missing");
+const nooa=data.repositories.find(repository=>repository.id==="nooa");
+const guardrails=data.repositories.find(repository=>repository.id==="guardrails");
+const anonymizer=data.repositories.find(repository=>repository.id==="anonymizer");
+if(nooa.packageName!=="nooa") fail("NOOA package identity drifted");
+if(nooa.status!=="research/alpha") fail("NOOA maturity/status is not research/alpha");
+if(!guardrails.colangVersion) fail("Guardrails Colang version is missing");
+if(!nooa.safetyNote.includes("OS-level sandbox")) fail("OS-level sandbox warning is missing");
+if(!anonymizer.safetyNote.includes("does not replace document permissions")) fail("Anonymizer safety note is missing");
 const serialized=JSON.stringify(data);
 if(/\bnat (eval|optimize)\b/.test(serialized)) fail("obsolete nat eval/optimize terminology remains");
 console.log("Catalog contract is valid: 24 lessons, 12 interactive, 12 guided, four canonical repositories.");
